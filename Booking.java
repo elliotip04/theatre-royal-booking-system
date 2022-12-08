@@ -1,10 +1,12 @@
 import java.util.ArrayList;
-import java.util.Random;   
+import java.util.Random;
+
+import theatre.TicketClass;   
 
 public class Booking {
 
 	private ArrayList<Ticket> basket;
-	private Ticket ticket;
+	private TicketClass ticket;
 	private Performance performance;
 	private DBConnector connector;
 	private Manager manager;
@@ -12,20 +14,17 @@ public class Booking {
 	private boolean moveToBasket;
 	private boolean orderConfirmed;
 	private Random random;
-	private int bookingID;
-	private int performanceID;
+	private int bookingId;
+	private int performanceId;
+	private int increment;
+	private Arraylist<Integer> soldTicketCollection;
 	
-	
-	public Booking(Ticket ticket, int numOfTickets) {
-		this.ticket = new Ticket();
-		this.numOfTickets = 0;
-		basket = new ArrayList<Ticket>();
-		manager = new Manager();
-		performance = new Performance();
+	public Booking(TicketClass ticket, int numOfTickets) {
+		this.ticket = new Ticket(); // I am not sure where to get the parameters to initiate the object from TicketClass.
+		this.numOfTickets = numOfTickets;
 		moveToBasket = false;
 		orderConfirmed = false;
-		Random random = new Random();
-		bookingID = null;
+		bookingId = null;
 	}
 
 	public ArrayList<Ticket> getBasket() {
@@ -40,24 +39,16 @@ public class Booking {
 		return moveToBasket;
 	}
 
-	public void setMoveToBasket(boolean moveToBasket) {
-		this.moveToBasket = moveToBasket;
-	}
-
 	public boolean isOrderConfirmed() {
 		return orderConfirmed;
 	}
 
-	public void setOrderConfirmed(boolean orderConfirmed) {
-		this.orderConfirmed = orderConfirmed;
+	public Random getBookingId() {
+		return bookingId;
 	}
 
-	public Random getBookingID() {
-		return bookingID;
-	}
-
-	public void setBookingID(Random bookingID) {
-		this.bookingID = bookingID;
+	public void setBookingId(Random bookingId) {
+		this.bookingId = bookingId;
 	}
 	
 	public int getNumOfTickets() {
@@ -68,12 +59,12 @@ public class Booking {
 		this.numOfTickets = numOfTickets;
 	}
 
-	public int getPerformanceID() {
-		return performanceID;
+	public int getPerformanceId() {
+		return performanceId;
 	}
 
-	public void setPerformanceID(int performanceID) {
-		this.performanceID = performanceID;
+	public void setPerformanceId(int performanceId) {
+		this.performanceId = performanceId;
 	}
 	
 	public void toggleMoveToBasket() {
@@ -86,7 +77,9 @@ public class Booking {
 	
 	public void addOrderToBasket() {
 		// Require a method in Ticket class to get the ticket before adding to basket
-		// order = ticket.getTicket() 
+		order = ticket.getTicket(); 
+		basket = new ArrayList<Ticket>();
+
 		if (moveToBasket == true) { 
 			// only add ticket/order to basket when true
 			basket.add(order);
@@ -99,34 +92,47 @@ public class Booking {
 		return message;
 	}
 	
-	public String placeBooking() {
+	public ArrayList<Integer> placeBooking() {
+		manager = new Manager();
+		performance = new Performance();
+		connector = new DBConnector();
+		random = new Random();
+		soldTicketCollection = new ArrayList<Integer>();
+
+		int performanceId = performance.getPerformanceId();
+
 		if (manager.clearBooking() == true) {
-			// call DBConnector class to run sql query
-			int bookingID = random.nextInt();
-			int performanceID = performance.getPerformanceID();
-			
-			connector.connect();
-			
-			query = 
-				"INSERT INTO ticket_sold (`Booking ID`, `Performance ID`, `Seat Type`, `Number of Tickets Sold`) VALUES ("
-				+ bookingID + "," + performanceID + "," + ticket.getSeatType() + "," + numOfTickets + ")";
-							
-			rs = connector.runQuery(query);
-			connector.printResult(rs);
-			connector.close();
-			
-			message = "Booking placed.";
+			int bookingId = random.nextInt();
+
+			for (i = 0; i < numOfTickets; i++) {
+					// call DBConnector class to run sql query
+					connector.connect();
+
+					// ticket_sold_id will increment in mysql as AUTO_INCREMENT is enabled when tickets_sold ticket was created
+					query = "INSERT INTO ticket_sold (`tickets_sold_id`, `performance_id`, `booking_id`, `seat_type`, `number_of_tickets_sold`) VALUES ("
+							+ 0 + "," + performanceId + "," + bookingId + "," + ticket.getSeatType() + "," + 1 + ")"; 
+									
+					rs = connector.runQuery(query);
+					connector.printResult(rs);
+					connector.close();
+
+					soldTicketCollection.add(bookingId);
+			}
 		}
-			
 		else {
-			message = "Booking needs to be cleared first.";
+			System.output.println("Booking needs to be cleared first.");
 		}
-		return message;
+
+		System.output.println(soldTicketCollection.size() + " tickets booked."); // printing number of tickets sold
+		System.output.println("Booking ID: " + bookingId); // printing booking ID
+
+		return soldTicketCollection;
 	}
 	
 	public void resetBooking() {
 		moveToBasket = false;
 		orderConfirmed = false;
 		basket.clear();
+		soldTicketCollection.clear();
 	}
 }
