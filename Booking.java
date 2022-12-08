@@ -96,18 +96,18 @@ public class Booking {
 			int bookingId = random.nextInt();
 
 			for (i = 0; i < numOfTickets; i++) {
-					// call DBConnector class to run sql query
-					connector.connect();
+				// call DBConnector class to run sql query
+				connector.connect();
 
-					// ticket_sold_id will increment in mysql as AUTO_INCREMENT is enabled when tickets_sold ticket was created
-					query = "INSERT INTO ticket_sold (`tickets_sold_id`, `performance_id`, `booking_id`, `seat_type`, `number_of_tickets_sold`) VALUES ("
-							+ 0 + "," + performanceId + "," + bookingId + "," + ticket.getSeatType() + "," + 1 + ")"; 
-									
-					rs = connector.runQuery(query);
-					connector.printResult(rs);
-					connector.close();
+				// ticket_sold_id will increment in mysql as AUTO_INCREMENT is enabled when tickets_sold ticket was created
+				query = "INSERT INTO ticket_sold (`tickets_sold_id`, `performance_id`, `booking_id`, `seat_type`, `number_of_tickets_sold`) VALUES ("
+						+ 0 + "," + performanceId + "," + bookingId + "," + ticket.getSeatType() + "," + 1 + ")"; 
+								
+				rs = connector.runQuery(query);
+				connector.printResult(rs);
+				connector.close();
 
-					soldTicketCollection.add(bookingId);
+				soldTicketCollection.add(bookingId);
 			}
 		}
 		else {
