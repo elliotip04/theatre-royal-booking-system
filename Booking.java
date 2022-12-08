@@ -16,7 +16,6 @@ public class Booking {
 	private Random random;
 	private int bookingId;
 	private int performanceId;
-	private int increment;
 	private Arraylist<Integer> soldTicketCollection;
 	
 	public Booking(TicketClass ticket, int numOfTickets) {
@@ -57,14 +56,6 @@ public class Booking {
 
 	public void setNumOfTickets(int numOfTickets) {
 		this.numOfTickets = numOfTickets;
-	}
-
-	public int getPerformanceId() {
-		return performanceId;
-	}
-
-	public void setPerformanceId(int performanceId) {
-		this.performanceId = performanceId;
 	}
 	
 	public void toggleMoveToBasket() {
