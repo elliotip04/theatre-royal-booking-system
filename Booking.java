@@ -19,7 +19,7 @@ public class Booking {
 	private Arraylist<Integer> soldTicketCollection;
 	
 	public Booking(TicketClass ticket, int numOfTickets) {
-		this.ticket = new Ticket(); // I am not sure where to get the parameters to initiate the object from TicketClass.
+		this.ticket = new Ticket();
 		this.numOfTickets = numOfTickets;
 		moveToBasket = false;
 		orderConfirmed = false;
