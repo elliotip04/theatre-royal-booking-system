@@ -1,4 +1,4 @@
-package theatre;
+package Theatre;
 
 import java.util.ArrayList;
 
@@ -16,12 +16,11 @@ public class Ticket {
 		soldTickets = new ArrayList<>();
 		seatType = true;
 		priceType = true;
-		show = new Show();
 		manager = new Manager();
 		customer = new Customer();
 	}
 
-	public <Ticket> getSoldTickets() {
+	public ArrayList<Ticket> getSoldTickets() {
 		return soldTickets;
 	}
 
@@ -46,11 +45,19 @@ public class Ticket {
 	}
 
 	public void toggleCircle() {
-		seatType = !seatType;
+		seatType = false;
+	}
+	
+	public void toggleStall() {
+		seatType = true;
 	}
 
-	public void toggleConsesion() {
-		priceType = !priceType;
+	public void toggleConcession() {
+		priceType = false;
+	}
+	
+	public void toggleFullPrice() {
+		priceType = true;
 	}
 
 	public void addSoldTickets(Ticket ticket) {
@@ -59,10 +66,22 @@ public class Ticket {
 
 	public void generateTicket(Booking booking) {
 		// only if array not full...
-		if (soldTickets.size() < 200 /*&& method to check  if manager has greenlit booking?*/) {
+		if (soldTickets.size() < 200 && manager.clearBooking() == true) {
 			System.out.println("Here's your ticket:");
-			System.out.println(/*method to get number of seats?*/ booking.getNumOfTickets() + " tickets to see " /*+ method to get show name? + method to get show date and stage time?*/);
+			printTicketDetails();
+			System.out.println("Here's how many tickets you booked " + booking.getNumOfTickets());
 			System.out.println("Thank you for booking. We hope you enjoy the show!");
 		}
+	}
+
+	public Object getTicket() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void printTicketDetails() {
+		System.out.println("Here's your ticket details: ");
+		System.out.println("Seat Type " + getSeatType());
+		System.out.println("Price Type " + getPriceType());
 	}
 }

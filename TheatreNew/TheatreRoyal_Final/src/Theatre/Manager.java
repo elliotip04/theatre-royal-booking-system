@@ -1,3 +1,6 @@
+package Theatre;
+
+import java.util.ArrayList;
 
 public class Manager {
 
@@ -6,6 +9,7 @@ public class Manager {
 	private boolean isFull;
 	private boolean showPlaying;
 	private Booking booking;
+	private ArrayList<Show> shows;
 	// private Show currentShow;
 
 	public Manager() {
@@ -13,7 +17,6 @@ public class Manager {
 		isFull = false;
 		showPlaying = false;
 		price = 0;
-		booking = new Booking();
 
 		// currentShow = new Show();
 	}
@@ -30,7 +33,7 @@ public class Manager {
 		showPlaying = !showPlaying;
 	}
 
-	public void clearBooking() {
+	public boolean clearBooking() {
 		while (booking.isMoveToBasket() == true && booking.isOrderConfirmed() == false) {
 			if (doubleBooked == false && isFull == false && showPlaying == true) {
 				System.out.println("This booking can be completed.");
@@ -38,6 +41,7 @@ public class Manager {
 				System.out.println("This booking cannot be processed.");
 			}
 		}
+		return true;
 	}
 
 	public Integer getPrice() {

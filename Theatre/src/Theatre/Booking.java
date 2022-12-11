@@ -1,29 +1,33 @@
+package Theatre;
 import java.util.ArrayList;
 import java.util.Random;
 
-import theatre.TicketClass;   
+//import theatre.TicketClass;   
 
 public class Booking {
 
 	private ArrayList<Ticket> basket;
-	private TicketClass ticket;
-	private Performance performance;
-	private DBConnector connector;
-	private Manager manager;
+	private Ticket ticket;
+	//private Performance performance;
+	//private DBConnector connector;
+	//private Manager manager;
 	private int numOfTickets;
 	private boolean moveToBasket;
 	private boolean orderConfirmed;
-	private Random random;
-	private int bookingId;
+	//private Random random;
+	private Random bookingId;
 	private int performanceId;
-	private Arraylist<Integer> soldTicketCollection;
+	private ArrayList<Random> soldTicketCollection;
 	
-	public Booking(TicketClass ticket, int numOfTickets) {
+	public Booking(Ticket ticket, int numOfTickets) {
 		this.ticket = new Ticket();
 		this.numOfTickets = numOfTickets;
 		moveToBasket = false;
 		orderConfirmed = false;
 		bookingId = null;
+		basket = new ArrayList<Ticket>();
+		soldTicketCollection = new ArrayList<Random>();
+
 	}
 
 	public ArrayList<Ticket> getBasket() {
@@ -66,36 +70,32 @@ public class Booking {
 		orderConfirmed = !orderConfirmed;
 	}
 	
-	public void addOrderToBasket() {
+	public void addOrderToBasket(Ticket order) {
 		// Require a method in Ticket class to get the ticket before adding to basket
-		order = ticket.getTicket(); 
-		basket = new ArrayList<Ticket>();
-
 		if (moveToBasket == true) { 
 			// only add ticket/order to basket when true
-			basket.add(order);
-			
-			message = "Added to basket.";
+		Ticket ticket = order;
+		basket.add(ticket); 
+		System.out.println("Added to basket.");
 		}
 		else {
-			message = "Confirm first before adding to basket.";
+		System.out.println("Confirm first before adding to basket.");
 		}
-		return message;
 	}
 	
-	public ArrayList<Integer> placeBooking() {
-		manager = new Manager();
-		performance = new Performance();
-		connector = new DBConnector();
-		random = new Random();
-		soldTicketCollection = new ArrayList<Integer>();
+	public ArrayList<Random> placeBooking() {
+		Manager manager = new Manager();
+		Performance performance = new Performance(null, null, null, 0.0);
+		DBConnector connector = new DBConnector();
+		Random random = new Random();
 
-		int performanceId = performance.getPerformanceId();
+		connector.connect();
+		connector.runQuery("SELECT peformance_ID from performance");
 
-		if (manager.clearBooking() == true) {
-			int bookingId = random.nextInt();
+		if (manager.clearBooking()== true) {
+		int bookingId = random.nextInt();
 
-			for (i = 0; i < numOfTickets; i++) {
+			for (int i = 0; i < numOfTickets; i++) {
 				// call DBConnector class to run sql query
 				connector.connect();
 
