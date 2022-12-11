@@ -6,8 +6,8 @@ class BookingTest {
 
 	@Test
 	void testAddOrderToBasket() {
-		ticket t = new Ticket();
-		Booking b = new Booking(ticket, 2);
+		ticket t = new Ticket(); 
+		Booking b = new Booking(ticket, 2); 
 		b.addOrderToBasket();
 		Assert.assertEquals("Confirm first before adding to basket.", b.addOrderToBasket());
 		b.toggleMoveToBasket(); 
@@ -17,18 +17,18 @@ class BookingTest {
 
 	@Test
 	void testPlaceBooking() {
-		ticket t = new Ticket();
-		Booking b = new Booking(ticket, 3);
+		ticket t = new Ticket(); 
+		Booking b = new Booking(ticket, 3); 
 		b.toggleMoveToBasket(); 
 		b.addOrderToBasket();
-		Assert.assertEquals("Booking needs to be cleared first.", b.placeBooking()); // test case for orderConfirmed == false
+		Assert.assertEquals(0, b.placeBooking().size()); // test case for orderConfirmed == false
 		b.toggleOrderConfirmed();
-		Assert.assertEquals("Booking placed.", b.placeBooking()); // test case for orderConfirmed == true
+		Assert.assertEquals(3, b.placeBooking().size()); // test case for orderConfirmed == true
 	}
 
 	@Test
 	void testResetBooking() {
-		ticket t = new Ticket();
+		ticket t = new Ticket(); 
 		Booking b = new Booking(ticket, 1); 
 		b.toggleMoveToBasket(); 
 		b.addOrderToBasket();
